@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'adicionar_viagem_page.dart';
+
 class RelatorioViagensPage extends StatelessWidget {
   const RelatorioViagensPage({super.key});
 
@@ -22,7 +24,7 @@ class RelatorioViagensPage extends StatelessWidget {
                   backgroundColor: Colors.deepPurple.shade50,
                   title: 'Vai viajar?',
                   illustration: const _FlatIllustration(mainIcon: Icons.airplane_ticket_outlined, accentIcon: Icons.airplanemode_active),
-                  onTap: () => _toast(context, 'Vai viajar?'),
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AdicionarViagemPage())),
                 ),
                 _QuickActionCard(
                   backgroundColor: Colors.green.shade50,
