@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// Retorna pelo Navigator.pop um Map { 'inicio': DateTime, 'fim': DateTime }
+
+import 'lancamento_opcoes_page.dart';
 
 class SelecionarDataViagemPage extends StatefulWidget {
   const SelecionarDataViagemPage({super.key, required this.motivo, required this.observacoes});
@@ -50,7 +51,7 @@ class _SelecionarDataViagemPageState extends State<SelecionarDataViagemPage> {
                 : () {
                     final inicio = _inicio!;
                     final fim = _fim ?? _inicio!;
-                    Navigator.of(context).pop({'inicio': inicio, 'fim': fim, 'motivo': widget.motivo, 'observacoes': widget.observacoes});
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LancamentoOpcoesPage()));
                   },
             child: const Text('Próximo'),
           ),
