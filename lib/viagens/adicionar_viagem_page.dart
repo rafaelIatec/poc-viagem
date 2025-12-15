@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'selecionar_data_viagem_page.dart';
+
 class AdicionarViagemPage extends StatefulWidget {
   const AdicionarViagemPage({super.key});
 
@@ -22,13 +24,29 @@ class _AdicionarViagemPageState extends State<AdicionarViagemPage> {
     return re.hasMatch(v);
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState?.save();
-      ScaffoldMessenger.of(context)
-        ..clearSnackBars()
-        ..showSnackBar(const SnackBar(content: Text('Próximo: dados validados.')));
-      // TODO: navegação para a próxima etapa ou salvar rascunho
+      final result = await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => SelecionarDataViagemPage(motivo: _motivo!, observacoes: _descricao),
+        ),
+      );
+      if (!mounted) return;
+      if (result is Map && result['inicio'] != null && result['fim'] != null) {
+        ScaffoldMessenger.of(context)
+          ..clearSnackBars()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(
+                'Período selecionado: '
+                '${(result['inicio'] as DateTime).day}/${(result['inicio'] as DateTime).month}/${(result['inicio'] as DateTime).year}'
+                ' → '
+                '${(result['fim'] as DateTime).day}/${(result['fim'] as DateTime).month}/${(result['fim'] as DateTime).year}',
+              ),
+            ),
+          );
+      }
     }
   }
 
