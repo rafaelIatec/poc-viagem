@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+import '../ui/theme.dart';
+// import 'package:flutter/services.dart';
+import '../ui/widgets/common_widgets.dart';
 
 class LancamentoOpcoesPage extends StatefulWidget {
   const LancamentoOpcoesPage({super.key});
@@ -20,26 +23,40 @@ class _LancamentoOpcoesPageState extends State<LancamentoOpcoesPage> {
       body: SafeArea(
         child: Column(
           children: [
-            const _HeaderMinimalista(),
+            const AppHeaderMinimal(title: 'Lançamento de despesas'),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+                padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, AppSpacing.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppSpacing.sm),
                     _IlustracaoFinanceira(color: cs.primary),
-                    const SizedBox(height: 20),
-                    _PerguntaCard(),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppSpacing.md),
+                    const AppCard(
+                      child: Text(
+                        'Deseja fazer lançamento agora?',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
                     Row(
                       children: [
                         Expanded(
-                          child: _OpcaoButton(label: 'Diário', selected: _selecionado == 'diario', onTap: () => setState(() => _selecionado = 'diario')),
+                          child: AppOutlineOption(
+                            label: 'Diário',
+                            selected: _selecionado == 'diario',
+                            onTap: () => setState(() => _selecionado = 'diario'),
+                          ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppSpacing.sm),
                         Expanded(
-                          child: _OpcaoButton(label: 'Por Despesa', selected: _selecionado == 'despesa', onTap: () => setState(() => _selecionado = 'despesa')),
+                          child: AppOutlineOption(
+                            label: 'Por Despesa',
+                            selected: _selecionado == 'despesa',
+                            onTap: () => setState(() => _selecionado = 'despesa'),
+                          ),
                         ),
                       ],
                     ),
@@ -51,53 +68,13 @@ class _LancamentoOpcoesPageState extends State<LancamentoOpcoesPage> {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        minimum: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.md),
         child: SizedBox(
           height: 52,
-          child: FilledButton.tonal(onPressed: () => Navigator.maybePop(context), child: const Text('Mais tarde')),
-        ),
-      ),
-    );
-  }
-}
-
-class _HeaderMinimalista extends StatelessWidget {
-  const _HeaderMinimalista();
-
-  @override
-  Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: IconButton(icon: const Icon(Icons.arrow_back_ios_new), onPressed: () => Navigator.maybePop(context)),
-            ),
-            const Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: EdgeInsets.only(top: 6),
-                child: Text(
-                  'Lançamento de despesas',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  final nav = Navigator.of(context);
-                  if (nav.canPop()) nav.pop();
-                },
-              ),
-            ),
-          ],
+          child: FilledButton.tonal(
+            onPressed: () => Navigator.maybePop(context),
+            child: const Text('Mais tarde'),
+          ),
         ),
       ),
     );
@@ -125,25 +102,17 @@ class _IlustracaoFinanceira extends StatelessWidget {
               width: 200,
               decoration: BoxDecoration(
                 color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 12, offset: const Offset(0, 4))],
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+                boxShadow: [appShadow(0.04)],
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.receipt_long, size: 56, color: Colors.grey.shade700),
                   const SizedBox(height: 8),
-                  Container(
-                    height: 8,
-                    width: 120,
-                    decoration: BoxDecoration(color: neutral, borderRadius: BorderRadius.circular(6)),
-                  ),
+                  Container(height: 8, width: 120, decoration: BoxDecoration(color: neutral, borderRadius: BorderRadius.circular(6))),
                   const SizedBox(height: 6),
-                  Container(
-                    height: 8,
-                    width: 80,
-                    decoration: BoxDecoration(color: neutral, borderRadius: BorderRadius.circular(6)),
-                  ),
+                  Container(height: 8, width: 80, decoration: BoxDecoration(color: neutral, borderRadius: BorderRadius.circular(6))),
                 ],
               ),
             ),
@@ -168,63 +137,6 @@ class _IlustracaoFinanceira extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _PerguntaCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 12, offset: const Offset(0, 6))],
-      ),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-        child: Text(
-          'Deseja fazer lançamento agora?',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-        ),
-      ),
-    );
-  }
-}
-
-class _OpcaoButton extends StatelessWidget {
-  const _OpcaoButton({required this.label, required this.selected, required this.onTap});
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final bg = selected ? cs.primary.withValues(alpha: 0.12) : Colors.grey.shade100;
-    final border = selected ? cs.primary : Colors.grey.shade300;
-    final fg = selected ? cs.primary : Colors.grey.shade800;
-
-    return Material(
-      color: bg,
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(14),
-        onTap: onTap,
-        child: Container(
-          height: 56,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: border, width: 1.2),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            label,
-            style: TextStyle(fontWeight: FontWeight.w800, color: fg),
-          ),
         ),
       ),
     );

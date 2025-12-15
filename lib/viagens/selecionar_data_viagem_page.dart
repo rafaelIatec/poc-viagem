@@ -49,8 +49,6 @@ class _SelecionarDataViagemPageState extends State<SelecionarDataViagemPage> {
             onPressed: _inicio == null
                 ? null
                 : () {
-                    final inicio = _inicio!;
-                    final fim = _fim ?? _inicio!;
                     Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LancamentoOpcoesPage()));
                   },
             child: const Text('Próximo'),
