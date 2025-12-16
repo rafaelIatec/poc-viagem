@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poc_viagem/viagens/selecao_despesas_screen.dart';
 
 import '../ui/theme.dart';
 import '../ui/widgets/common_widgets.dart';
@@ -195,7 +196,9 @@ class _LancamentosScreenState extends State<LancamentosScreen> {
             ),
             const SizedBox(width: AppSpacing.md),
             TextButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SelecaoDespesasScreen()));
+              },
               icon: Icon(Icons.add, color: cs.primary),
               label: Text(
                 'Adicionar Despesa',
