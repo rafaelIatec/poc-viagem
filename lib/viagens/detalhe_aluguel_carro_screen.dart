@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:poc_viagem/viagens/resumo_viagem_screen.dart';
 
 import '../ui/theme.dart';
 
@@ -268,7 +269,9 @@ class _DetalheAluguelCarroScreenState extends State<DetalheAluguelCarroScreen> {
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => Navigator.maybePop(context),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ResumoViagemScreen()));
+                      },
                       style: ElevatedButton.styleFrom(backgroundColor: azul, foregroundColor: Colors.white, minimumSize: const Size.fromHeight(48)),
                       child: const Text('Próximo', style: TextStyle(fontWeight: FontWeight.w800)),
                     ),
