@@ -12,7 +12,6 @@ class DeslocamentoMapScreen extends StatefulWidget {
 class _DeslocamentoMapScreenState extends State<DeslocamentoMapScreen> {
   final TextEditingController _origemCtrl = TextEditingController(text: 'Curitiba, PR, Brasil');
   final TextEditingController _destinoCtrl = TextEditingController(text: 'Hortolândia, SP, Brasil');
-  final bool _somenteIda = false;
   int _zoom = 12;
 
   @override
