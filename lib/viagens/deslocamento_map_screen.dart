@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../ui/theme.dart';
+import './editar_viagem_passageiros_screen.dart';
 
 class DeslocamentoMapScreen extends StatefulWidget {
   const DeslocamentoMapScreen({super.key});
@@ -156,7 +157,9 @@ class _DeslocamentoMapScreenState extends State<DeslocamentoMapScreen> {
                       width: double.infinity,
                       height: 48,
                       child: ElevatedButton(
-                        onPressed: () => Navigator.maybePop(context),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const EditarViagemPassageirosScreen()));
+                        },
                         style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1976D2), foregroundColor: Colors.white),
                         child: const Text('Salvar e Avançar', style: TextStyle(fontWeight: FontWeight.w800)),
                       ),
