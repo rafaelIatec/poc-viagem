@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poc_viagem/viagens/detalhe_aluguel_carro_screen.dart';
 
 class SelecaoDespesasScreen extends StatefulWidget {
   const SelecaoDespesasScreen({super.key});
@@ -99,7 +100,12 @@ class _SelecaoDespesasScreenState extends State<SelecaoDespesasScreen> {
                   onPressed: _temSelecionadas
                       ? () {
                           final selecionadas = _opcoes.entries.where((e) => e.value).map((e) => e.key).toList(growable: false);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetalheDespesaScreen(categoriasSelecionadas: selecionadas)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetalheAluguelCarroScreen()));
+                          // if (selecionadas.contains('Aluguel de carro')) {
+                          //   Navigator.push(context, MaterialPageRoute(builder: (context) => const DetalheAluguelCarroScreen()));
+                          // } else {
+                          //   Navigator.push(context, MaterialPageRoute(builder: (context) => DetalheDespesaScreen(categoriasSelecionadas: selecionadas)));
+                          // }
                         }
                       : null,
                   style: ElevatedButton.styleFrom(backgroundColor: azul, foregroundColor: Colors.white),
