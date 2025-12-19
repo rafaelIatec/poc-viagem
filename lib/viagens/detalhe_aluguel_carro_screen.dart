@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import '../ui/theme.dart';
 
 class DetalheAluguelCarroScreen extends StatefulWidget {
-  const DetalheAluguelCarroScreen({super.key});
+  const DetalheAluguelCarroScreen({super.key, required this.titulo});
+  final String titulo;
 
   @override
   State<DetalheAluguelCarroScreen> createState() => _DetalheAluguelCarroScreenState();
@@ -96,9 +97,9 @@ class _DetalheAluguelCarroScreenState extends State<DetalheAluguelCarroScreen> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.maybePop(context),
         ),
-        title: const Text(
-          'Aluguel de carro',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+        title: Text(
+          widget.titulo,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
         ),
         actions: [
           IconButton(

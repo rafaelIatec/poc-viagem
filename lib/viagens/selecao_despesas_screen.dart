@@ -100,12 +100,8 @@ class _SelecaoDespesasScreenState extends State<SelecaoDespesasScreen> {
                   onPressed: _temSelecionadas
                       ? () {
                           final selecionadas = _opcoes.entries.where((e) => e.value).map((e) => e.key).toList(growable: false);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetalheAluguelCarroScreen()));
-                          // if (selecionadas.contains('Aluguel de carro')) {
-                          //   Navigator.push(context, MaterialPageRoute(builder: (context) => const DetalheAluguelCarroScreen()));
-                          // } else {
-                          //   Navigator.push(context, MaterialPageRoute(builder: (context) => DetalheDespesaScreen(categoriasSelecionadas: selecionadas)));
-                          // }
+                          final String titulo = selecionadas.isNotEmpty ? selecionadas.first : 'Despesa';
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetalheAluguelCarroScreen(titulo: titulo)));
                         }
                       : null,
                   style: ElevatedButton.styleFrom(backgroundColor: azul, foregroundColor: Colors.white),
