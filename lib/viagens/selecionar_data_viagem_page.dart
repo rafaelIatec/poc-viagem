@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'lancamento_opcoes_page.dart';
+import 'lancamentos_diarias_screen.dart';
 
 class SelecionarDataViagemPage extends StatefulWidget {
   const SelecionarDataViagemPage({super.key, required this.motivo, required this.observacoes});
@@ -53,7 +53,7 @@ class _SelecionarDataViagemPageState extends State<SelecionarDataViagemPage> {
                     final fim = _fim ?? _inicio!;
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => LancamentoOpcoesPage(dataInicio: inicio, dataFim: fim),
+                        builder: (_) => LancamentosDiariasScreen(dataInicio: inicio, dataFim: fim),
                       ),
                     );
                   },
