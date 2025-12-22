@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:poc_viagem/viagens/deslocamento_map_screen.dart';
 import 'package:poc_viagem/viagens/resumo_viagem_screen.dart';
 
 import '../ui/theme.dart';
 
-class DetalheAluguelCarroScreen extends StatefulWidget {
-  const DetalheAluguelCarroScreen({super.key, required this.titulo});
-  final String titulo;
+class DetalheDespesasScreen extends StatefulWidget {
+  const DetalheDespesasScreen({super.key, required this.categoriasSelecionadas, this.temAluguelCarro = false});
+  final List<String> categoriasSelecionadas;
+  final bool temAluguelCarro; // Se verdadeiro, ao concluir vai para DeslocamentoMapScreen
 
   @override
-  State<DetalheAluguelCarroScreen> createState() => _DetalheAluguelCarroScreenState();
+  State<DetalheDespesasScreen> createState() => _DetalheDespesasScreenState();
 }
 
-class _DetalheAluguelCarroScreenState extends State<DetalheAluguelCarroScreen> {
+class _DetalheDespesasScreenState extends State<DetalheDespesasScreen> {
   final TextEditingController _valorCtrl = TextEditingController();
   final TextEditingController _obsCtrl = TextEditingController();
 
   final List<_ItemDespesa> _itens = [];
   final List<String> _comprovantes = [];
+  int _currentIndex = 0;
 
   double get _valorDigitado {
     final raw = _valorCtrl.text.trim().replaceAll('.', '').replaceAll(',', '.');
@@ -50,6 +53,17 @@ class _DetalheAluguelCarroScreenState extends State<DetalheAluguelCarroScreen> {
       ScaffoldMessenger.of(context)
         ..clearSnackBars()
         ..showSnackBar(const SnackBar(content: Text('Informe um valor válido.')));
+      return;
+    }
+    final total = widget.categoriasSelecionadas.length;
+    if (_currentIndex >= total) {
+      return;
+    }
+    // Permite apenas 1 item por categoria atual
+    if (_itens.length > _currentIndex) {
+      ScaffoldMessenger.of(context)
+        ..clearSnackBars()
+        ..showSnackBar(SnackBar(content: Text('Despesa já adicionada para "${widget.categoriasSelecionadas[_currentIndex]}".')));
       return;
     }
     _itens.add(_ItemDespesa(valor: valor, observacao: _obsCtrl.text.trim()));
@@ -90,6 +104,8 @@ class _DetalheAluguelCarroScreenState extends State<DetalheAluguelCarroScreen> {
   Widget build(BuildContext context) {
     const azul = Color(0xFF1976D2);
     const destaque = Color(0xFFFFC107);
+    final total = widget.categoriasSelecionadas.length;
+    final categoriaAtual = total > 0 ? widget.categoriasSelecionadas[_currentIndex] : 'Despesa';
 
     return Scaffold(
       appBar: AppBar(
@@ -99,7 +115,7 @@ class _DetalheAluguelCarroScreenState extends State<DetalheAluguelCarroScreen> {
           onPressed: () => Navigator.maybePop(context),
         ),
         title: Text(
-          widget.titulo,
+          categoriaAtual,
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
         ),
         actions: [
@@ -134,6 +150,25 @@ class _DetalheAluguelCarroScreenState extends State<DetalheAluguelCarroScreen> {
             ),
 
             const SizedBox(height: AppSpacing.md),
+
+            // Progresso do preenchimento
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              child: Row(
+                children: [
+                  Icon(Icons.list_alt, color: azul),
+                  const SizedBox(width: AppSpacing.xs),
+                  Text(
+                    'Despesa ${_currentIndex + 1} de $total',
+                    style: TextStyle(color: azul, fontWeight: FontWeight.w700),
+                  ),
+                  const Spacer(),
+                  Text('Restantes: ${total - (_currentIndex + 1)}', style: const TextStyle(fontWeight: FontWeight.w600)),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: AppSpacing.sm),
 
             // Resumo do Total
             Padding(
@@ -212,7 +247,7 @@ class _DetalheAluguelCarroScreenState extends State<DetalheAluguelCarroScreen> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: OutlinedButton.icon(
-                  onPressed: _adicionarDespesa,
+                  onPressed: (_currentIndex >= total || _itens.length > _currentIndex) ? null : _adicionarDespesa,
                   icon: Icon(Icons.add, color: azul),
                   label: Text(
                     'Adicionar despesa',
@@ -270,7 +305,40 @@ class _DetalheAluguelCarroScreenState extends State<DetalheAluguelCarroScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ResumoViagemScreen()));
+                        final total = widget.categoriasSelecionadas.length;
+                        if (_currentIndex >= total) {
+                          return;
+                        }
+                        // Se ainda não adicionou a despesa desta categoria, tenta adicionar automaticamente
+                        if (_itens.length == _currentIndex) {
+                          final valor = _valorDigitado;
+                          if (valor <= 0) {
+                            ScaffoldMessenger.of(context)
+                              ..clearSnackBars()
+                              ..showSnackBar(const SnackBar(content: Text('Informe um valor para adicionar esta despesa.')));
+                            return;
+                          }
+                          _itens.add(_ItemDespesa(valor: valor, observacao: _obsCtrl.text.trim()));
+                          _valorCtrl.clear();
+                          _obsCtrl.clear();
+                        }
+
+                        // Avança para a próxima categoria ou segue para o resumo
+                        if (_currentIndex + 1 < total) {
+                          setState(() {
+                            _currentIndex += 1;
+                          });
+                          ScaffoldMessenger.of(context)
+                            ..clearSnackBars()
+                            ..showSnackBar(SnackBar(content: Text('Agora: ${widget.categoriasSelecionadas[_currentIndex]}')));
+                          return;
+                        }
+                        // Final do detalhamento: se houver aluguel, segue para mapa; senão, vai para resumo
+                        if (widget.temAluguelCarro) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const DeslocamentoMapScreen()));
+                        } else {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const ResumoViagemScreen()));
+                        }
                       },
                       style: ElevatedButton.styleFrom(backgroundColor: azul, foregroundColor: Colors.white, minimumSize: const Size.fromHeight(48)),
                       child: const Text('Próximo', style: TextStyle(fontWeight: FontWeight.w800)),

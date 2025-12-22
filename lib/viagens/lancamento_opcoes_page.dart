@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:poc_viagem/viagens/lancamentos_screen.dart';
+import 'package:poc_viagem/viagens/lancamentos_diarias_screen.dart';
+import 'package:poc_viagem/viagens/selecao_despesas_screen.dart';
 
 import '../ui/theme.dart';
 // import 'package:flutter/services.dart';
 import '../ui/widgets/common_widgets.dart';
 
 class LancamentoOpcoesPage extends StatefulWidget {
-  const LancamentoOpcoesPage({super.key});
+  const LancamentoOpcoesPage({super.key, this.dataInicio, this.dataFim});
+  final DateTime? dataInicio;
+  final DateTime? dataFim;
 
   @override
   State<LancamentoOpcoesPage> createState() => _LancamentoOpcoesPageState();
@@ -19,10 +22,27 @@ class _LancamentoOpcoesPageState extends State<LancamentoOpcoesPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Color(0xFF1976D2),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.maybePop(context),
+        ),
+        centerTitle: true,
+        title: Text(
+          'Lançamento de despesas',
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.close, color: Colors.white),
+            onPressed: () => Navigator.maybePop(context),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            const AppHeaderMinimal(title: 'Lançamento de despesas'),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, AppSpacing.lg),
@@ -44,16 +64,27 @@ class _LancamentoOpcoesPageState extends State<LancamentoOpcoesPage> {
                       children: [
                         Expanded(
                           child: AppOutlineOption(
-                            label: 'Diário',
+                            label: 'Diária',
                             selected: true,
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LancamentosScreen()));
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => LancamentosDiariasScreen(dataInicio: widget.dataInicio, dataFim: widget.dataFim),
+                                ),
+                              );
                             },
                           ),
                         ),
                         const SizedBox(width: AppSpacing.sm),
                         Expanded(
-                          child: AppOutlineOption(label: 'Por Despesa', selected: true, onTap: () {}),
+                          child: AppOutlineOption(
+                            label: 'Por Despesa',
+                            selected: true,
+                            onTap: () {
+                              // Acesso direto: manter 'Diárias' disponível na seleção
+                              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SelecaoDespesasScreen(incluirDiarias: true)));
+                            },
+                          ),
                         ),
                       ],
                     ),

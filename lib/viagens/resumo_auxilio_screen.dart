@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poc_viagem/viagens/resumo_viagem_screen.dart';
 
 import '../ui/theme.dart';
 
@@ -89,23 +90,19 @@ class _ResumoAuxilioScreenState extends State<ResumoAuxilioScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 0,
-        color: Colors.white,
-        child: SafeArea(
-          minimum: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.md),
-          child: SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              onPressed: () => Navigator.maybePop(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: azulVibrante,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              child: const Text('Salvar e Avançar', style: TextStyle(fontWeight: FontWeight.w800)),
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.md),
+        child: SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ResumoViagemScreen())),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: azulVibrante,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
+            child: const Text('Salvar e Avançar', style: TextStyle(fontWeight: FontWeight.w800)),
           ),
         ),
       ),

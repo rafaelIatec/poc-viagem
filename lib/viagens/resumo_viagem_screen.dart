@@ -192,17 +192,23 @@ class _ResumoViagemScreenState extends State<ResumoViagemScreen> {
             const SizedBox(height: AppSpacing.lg),
 
             // Botão central "Adicionar Despesa"
-            Center(
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  // Exemplo simples: adicionar item mock
-                  setState(() {
-                    _itens.add(_ExpenseItem(id: DateTime.now().microsecondsSinceEpoch.toString(), titulo: 'Nova despesa', valor: 120.0, anexos: 0, icon: Icons.receipt_long));
-                  });
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('Adicionar Despesa'),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: AppSpacing.md),
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      // Exemplo simples: adicionar item mock
+                      setState(() {
+                        _itens.add(_ExpenseItem(id: DateTime.now().microsecondsSinceEpoch.toString(), titulo: 'Nova despesa', valor: 120.0, anexos: 0, icon: Icons.receipt_long));
+                      });
+                    },
+                    icon: const Icon(Icons.add),
+                    label: const Text('Adicionar Despesa'),
+                  ),
+                ),
+              ],
             ),
 
             const SizedBox(height: AppSpacing.sm),

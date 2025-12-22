@@ -1,24 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:poc_viagem/viagens/detalhe_aluguel_carro_screen.dart';
+import 'package:poc_viagem/viagens/deslocamento_map_screen.dart';
+import 'package:poc_viagem/viagens/detalhe_despesas_screen.dart';
+import 'package:poc_viagem/viagens/lancamentos_diarias_screen.dart';
+import 'package:poc_viagem/viagens/resumo_viagem_screen.dart';
 
 class SelecaoDespesasScreen extends StatefulWidget {
-  const SelecaoDespesasScreen({super.key});
+  const SelecaoDespesasScreen({super.key, this.incluirDiarias = true});
+  final bool incluirDiarias;
 
   @override
   State<SelecaoDespesasScreen> createState() => _SelecaoDespesasScreenState();
 }
 
 class _SelecaoDespesasScreenState extends State<SelecaoDespesasScreen> {
-  final Map<String, bool> _opcoes = {
-    'Passagens': false,
-    'Hospedagem': false,
-    'Seguro de viagem': false,
-    'Deslocamento': false,
-    'Aluguel de carro': false,
-    'Abastecimento': false,
-    'Diárias': false,
-    'Refeições ( religioso )': false,
-  };
+  late final Map<String, bool> _opcoes;
+
+  @override
+  void initState() {
+    super.initState();
+    _opcoes = {
+      'Passagens': false,
+      'Hospedagem': false,
+      'Seguro de viagem': false,
+      'Deslocamento': false,
+      'Aluguel de carro': false,
+      'Abastecimento': false,
+      'Diárias': false,
+      'Refeições ( religioso )': false,
+    };
+    if (!widget.incluirDiarias) {
+      _opcoes.remove('Diárias');
+    }
+  }
 
   bool get _temSelecionadas => _opcoes.values.any((v) => v);
 
@@ -100,8 +113,33 @@ class _SelecaoDespesasScreenState extends State<SelecaoDespesasScreen> {
                   onPressed: _temSelecionadas
                       ? () {
                           final selecionadas = _opcoes.entries.where((e) => e.value).map((e) => e.key).toList(growable: false);
-                          final String titulo = selecionadas.isNotEmpty ? selecionadas.first : 'Despesa';
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetalheAluguelCarroScreen(titulo: titulo)));
+
+                          final bool temDiarias = selecionadas.contains('Diárias');
+                          final bool temAluguel = selecionadas.contains('Aluguel de carro');
+                          final List<String> outras = selecionadas.where((e) => e != 'Diárias' && e != 'Aluguel de carro').toList(growable: false);
+
+                          if (temDiarias) {
+                            // Ordem: Diárias -> Outras -> Aluguel de carro
+                            final restantes = <String>[...outras, if (temAluguel) 'Aluguel de carro'];
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LancamentosDiariasScreen(fromSelecao: true, remainingCategorias: restantes)));
+                          } else {
+                            // Sem diárias: se só tiver aluguel, vai direto pro mapa; se tiver outras, detalha e aluguel por último
+                            if (outras.isEmpty) {
+                              if (temAluguel) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const DeslocamentoMapScreen()));
+                              } else {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const ResumoViagemScreen()));
+                              }
+                              return;
+                            }
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetalheDespesasScreen(categoriasSelecionadas: outras, temAluguelCarro: temAluguel),
+                              ),
+                            );
+                          }
                         }
                       : null,
                   style: ElevatedButton.styleFrom(backgroundColor: azul, foregroundColor: Colors.white),

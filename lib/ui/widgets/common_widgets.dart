@@ -8,7 +8,8 @@ class AppHeaderMinimal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: Color(0xFF1976D2),
       padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, 0),
       child: Stack(
         children: [

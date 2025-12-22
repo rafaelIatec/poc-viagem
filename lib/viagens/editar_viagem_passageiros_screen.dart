@@ -166,25 +166,21 @@ class _EditarViagemPassageirosScreenState extends State<EditarViagemPassageirosS
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 0,
-        color: Colors.white,
-        child: SafeArea(
-          minimum: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.md),
-          child: SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const ResumoAuxilioScreen()));
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: azulAvancar,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              child: const Text('Avançar', style: TextStyle(fontWeight: FontWeight.w800)),
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.md),
+        child: SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const ResumoAuxilioScreen()));
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: azulAvancar,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
+            child: const Text('Avançar', style: TextStyle(fontWeight: FontWeight.w800)),
           ),
         ),
       ),

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Chave do Google Maps SDK / Directions API -->
+    <string name="google_maps_api_key">AIzaSyCTCkJw0j8G0d0Q8biw9gjTQTfCPpZeNE0</string>
+</resources>

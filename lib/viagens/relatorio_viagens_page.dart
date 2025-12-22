@@ -9,7 +9,6 @@ class RelatorioViagensPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: CustomScrollView(
@@ -89,16 +88,12 @@ class _RelatorioHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final gradientStart = colorScheme.primary;
-    final gradientEnd = colorScheme.primaryContainer;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [gradientStart, gradientEnd]),
-        ),
+        height: 180,
+        decoration: BoxDecoration(color: Color(0xFF1976D2)),
         child: SafeArea(
           bottom: false,
           child: Padding(
@@ -140,7 +135,7 @@ class _RelatorioHeader extends StatelessWidget {
                 Align(
                   alignment: Alignment.topCenter,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(44, 4, 44, 0),
+                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -150,16 +145,20 @@ class _RelatorioHeader extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 22),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          'Acompanhe de perto',
+                        RichText(
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white.withValues(alpha: 0.92), fontWeight: FontWeight.w600, fontSize: 14),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          'Suas viagens…',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(color: colorScheme.tertiary, fontWeight: FontWeight.w800),
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Acompanhe de perto ',
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white.withValues(alpha: 0.92), fontWeight: FontWeight.w600, fontSize: 14),
+                              ),
+                              TextSpan(
+                                text: 'Suas viagens…',
+                                style: Theme.of(context).textTheme.titleSmall?.copyWith(color: colorScheme.tertiary, fontWeight: FontWeight.w800),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

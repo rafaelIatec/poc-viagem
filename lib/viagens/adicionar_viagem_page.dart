@@ -141,15 +141,11 @@ class _HeaderAdicionarViagem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Container(
         height: 180,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [cs.primary, cs.primaryContainer]),
-        ),
+        decoration: BoxDecoration(color: Color(0xFF1976D2)),
         child: SafeArea(
           bottom: false,
           child: Padding(
