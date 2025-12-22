@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:poc_viagem/viagens/deslocamento_map_screen.dart';
 import 'package:poc_viagem/viagens/detalhe_despesas_screen.dart';
 import 'package:poc_viagem/viagens/resumo_viagem_screen.dart';
+import 'package:poc_viagem/viagens/selecao_despesas_screen.dart';
 import 'package:poc_viagem/viagens/selecionar_dias_trecho_page.dart';
 
 import '../ui/theme.dart';
@@ -266,6 +267,16 @@ class _LancamentosDiariasScreenState extends State<LancamentosDiariasScreen> {
                         },
                         icon: const Icon(Icons.copy_all),
                         label: const Text('Replicar'),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SelecaoDespesasScreen(incluirDiarias: false)));
+                        },
+                        icon: const Icon(Icons.receipt_long),
+                        label: const Text('Adicionar despesa'),
                       ),
                     ),
                   ],
