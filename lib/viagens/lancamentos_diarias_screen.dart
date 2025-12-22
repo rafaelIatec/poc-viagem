@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:poc_viagem/viagens/deslocamento_map_screen.dart';
 import 'package:poc_viagem/viagens/detalhe_despesas_screen.dart';
 import 'package:poc_viagem/viagens/resumo_viagem_screen.dart';
-import 'package:poc_viagem/viagens/selecao_despesas_screen.dart';
 
 import '../ui/theme.dart';
 import '../ui/widgets/common_widgets.dart';
@@ -298,21 +297,6 @@ class _LancamentosDiariasScreenState extends State<LancamentosDiariasScreen> {
                 ),
               ),
             ),
-            const SizedBox(width: AppSpacing.md),
-            Visibility(
-              visible: !vindoDaSelecao,
-              child: TextButton.icon(
-                onPressed: () {
-                  // Vindo da tela de Diária (opções): permitir adicionar outras despesas (sem Diárias)
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SelecaoDespesasScreen(incluirDiarias: false)));
-                },
-                icon: Icon(Icons.add, color: cs.primary),
-                label: Text(
-                  'Adicionar Despesa',
-                  style: TextStyle(color: cs.primary, fontWeight: FontWeight.w800),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -357,38 +341,6 @@ String _fmtDiaSemana(DateTime d) {
 bool _isSameDate(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
 
 enum _OpcaoDiaria { basica, desjejum, almoco, jantar }
-
-_OpcaoDiaria _opcaoFromLabel(String label) {
-  switch (label) {
-    case 'Básica':
-      return _OpcaoDiaria.basica;
-    case 'Desjejum':
-      return _OpcaoDiaria.desjejum;
-    case 'Almoço':
-      return _OpcaoDiaria.almoco;
-    case 'Jantar':
-      return _OpcaoDiaria.jantar;
-    default:
-      return _OpcaoDiaria.jantar;
-  }
-}
-
-extension _OpcaoDiariaExt on _OpcaoDiaria {
-  String get label {
-    switch (this) {
-      case _OpcaoDiaria.basica:
-        return 'Básica';
-      case _OpcaoDiaria.desjejum:
-        return 'Desjejum';
-      case _OpcaoDiaria.almoco:
-        return 'Almoço';
-      case _OpcaoDiaria.jantar:
-        return 'Jantar';
-    }
-  }
-}
-
-// (sem helpers globais adicionais)
 
 class _OptionItem extends StatelessWidget {
   const _OptionItem({required this.label, required this.selected, required this.onTap, this.icon, this.baseColor});

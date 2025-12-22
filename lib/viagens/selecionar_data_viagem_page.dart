@@ -298,6 +298,7 @@ class _MonthCalendar extends StatelessWidget {
               }
 
               return GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: () => onDayTap(date),
                 child: Container(
                   decoration: deco,

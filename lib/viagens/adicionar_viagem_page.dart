@@ -14,10 +14,17 @@ class _AdicionarViagemPageState extends State<AdicionarViagemPage> {
   final _formKey = GlobalKey<FormState>();
 
   String? _motivo;
-  String? _temVoto; // campo texto (formato YYYY-MM)
+  String? _temVoto; // campo texto (formato YYYY-MM) – opcional
   String _descricao = '';
 
-  bool get _isValid => (_motivo != null && _motivo!.isNotEmpty) && (_temVoto != null && _validMesAno(_temVoto!)) && _descricao.trim().isNotEmpty;
+  // Botão habilita se motivo e descrição estiverem preenchidos
+  // e, se "tem voto" estiver preenchido, apenas quando válido.
+  bool get _isValid {
+    final motivoOk = (_motivo != null && _motivo!.isNotEmpty);
+    final descricaoOk = _descricao.trim().isNotEmpty;
+    final temVotoOk = (_temVoto == null || _temVoto!.isEmpty || _validMesAno(_temVoto!));
+    return motivoOk && descricaoOk && temVotoOk;
+  }
 
   bool _validMesAno(String v) {
     final re = RegExp(r'^\d{4}-(0[1-9]|1[0-2])$');
@@ -98,8 +105,9 @@ class _AdicionarViagemPageState extends State<AdicionarViagemPage> {
                         keyboardType: TextInputType.datetime,
                         inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')), LengthLimitingTextInputFormatter(7)],
                         onChanged: (v) => setState(() => _temVoto = v),
+                        // Opcional: só valida formato se preenchido
                         validator: (v) {
-                          if (v == null || v.isEmpty) return 'Campo obrigatório';
+                          if (v == null || v.isEmpty) return null;
                           if (!_validMesAno(v)) return 'Use o formato YYYY-MM';
                           return null;
                         },
